@@ -3,19 +3,19 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { Input } from "./ui/input";
 import SuggestedList from "./suggestions";
+import searchHook from "@/hooks/searchHook";
 export default function PlacesAutocomplete() {
-  // State for the input text
-  const [text, setText] = useState("");
-  // State for search results
-  const [searchResults, setSearchResults] = useState([]);
-  // State for loading indicator
-  const [loading, setLoading] = useState(false);
-  //selected index
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  // Debounced search function to avoid making too many requests while typing
+  const {
+    text,
+    searchResults,
+    selectedPlace,
+    selectedIndex,
+    setText,
+    setSearchResults,
+    setSelectedPlace,
+    setSelectedIndex,
+  } = searchHook();
   const debouncedSearch = useCallback(async (value) => {
-    setLoading(true);
     const link = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&filter=countrycode:bd&format=json&apiKey=cb3064e03e944dd3a8bdbb97e221a185`;
 
     try {
@@ -23,8 +23,6 @@ export default function PlacesAutocomplete() {
       setSearchResults(response.data.results);
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
@@ -37,13 +35,9 @@ export default function PlacesAutocomplete() {
   };
   function handleKeyEvent(e) {
     if (e.key === "ArrowUp") {
-      setSelectedIndex((prevIndex) =>
-        prevIndex === -1 ? searchResults.length - 1 : prevIndex - 1
-      );
+      setSelectedIndex("up");
     } else if (e.key === "ArrowDown") {
-      setSelectedIndex((prevIndex) =>
-        prevIndex === searchResults.length - 1 ? -1 : prevIndex + 1
-      );
+      setSelectedIndex("down");
     } else if (e.key === "Enter") {
       if (selectedIndex !== -1) {
         const selectedProduct = searchResults[selectedIndex];
