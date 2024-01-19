@@ -1,15 +1,5 @@
 "use client";
-import Image from "next/image";
-import {
-  GoogleMap,
-  useJsApiLoader,
-  Marker,
-  Autocomplete,
-} from "@react-google-maps/api";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import PlacesAutoComplete from "@/components/autocomplete";
 const containerStyle = {
   width: "100%",
@@ -20,33 +10,38 @@ const center = {
   lat: 22.8570451,
   lng: 91.3966686,
 };
+import { HashLoader } from "react-spinners";
 export default function Home() {
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
     libraries: libraries,
   });
-
-  return (
-    isLoaded && (
-      <main className="w-full bg-white relative">
-        <div className="absolute z-10 w-full">
-          <PlacesAutoComplete />
-        </div>
-
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={10}
-          options={{
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-        >
-          <Marker position={center} />
-        </GoogleMap>
+  if (!isLoaded) {
+    return (
+      <main className="w-full flex items-center justify-center h-screen">
+        <HashLoader />
       </main>
-    )
+    );
+  }
+  return (
+    <main className="w-full bg-white relative">
+      <div className="absolute  top-3 z-10 w-full">
+        <PlacesAutoComplete />
+      </div>
+
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        options={{
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        <Marker position={center} />
+      </GoogleMap>
+    </main>
   );
 }

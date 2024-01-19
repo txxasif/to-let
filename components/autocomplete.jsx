@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { Input } from "./ui/input";
-
+import SuggestedList from "./suggestions";
 export default function PlacesAutocomplete() {
   // State for the input text
   const [text, setText] = useState("");
@@ -16,7 +16,7 @@ export default function PlacesAutocomplete() {
   // Debounced search function to avoid making too many requests while typing
   const debouncedSearch = useCallback(async (value) => {
     setLoading(true);
-    const link = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&country=Banglades&format=json&apiKey=cb3064e03e944dd3a8bdbb97e221a185`;
+    const link = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&filter=countrycode:bd&format=json&apiKey=cb3064e03e944dd3a8bdbb97e221a185`;
 
     try {
       const response = await axios.get(link);
@@ -48,45 +48,31 @@ export default function PlacesAutocomplete() {
       if (selectedIndex !== -1) {
         const selectedProduct = searchResults[selectedIndex];
         alert(selectedProduct.address_line2);
+        setSelectedPlace(selectedProduct);
         setSearchResults([]);
       }
     }
   }
-
-  // Render the component
+  function setSelectedPlaceReducer(place) {
+    setSelectedPlace(place);
+    alert(place.address_line2);
+    setSearchResults([]);
+  }
   return (
-    <>
-      <div className="flex flex-col mx-auto max-w-lg">
-        <Input
-          onKeyDown={handleKeyEvent}
-          type="text"
-          value={text}
-          onChange={onChange}
+    <div className="flex flex-col mx-auto min-w-min max-w-lg">
+      <Input
+        onKeyDown={handleKeyEvent}
+        type="text"
+        value={text}
+        onChange={onChange}
+      />
+      {text !== "" && searchResults.length > 0 ? (
+        <SuggestedList
+          places={searchResults}
+          selectedIndex={selectedIndex}
+          setSelectedPlace={setSelectedPlaceReducer}
         />
-        {text !== "" && searchResults.length > 0 ? (
-          <TempList places={searchResults} selectedIndex={selectedIndex} />
-        ) : null}
-      </div>
-    </>
-  );
-}
-
-// Component to render the list of places
-function TempList({ places, selectedIndex }) {
-  console.log(places);
-
-  return (
-    <div className="max-h-96 w-full bg-white overflow-y-scroll ">
-      {places.map((place, idx) => (
-        <div
-          className={`${
-            selectedIndex === idx ? "bg-gray-200" : ""
-          } py-2 px-4 lex items-center justify-between gap-8 hover:bg-gray-200 cursor-pointer`}
-          key={idx}
-        >
-          <p>{place.address_line2}</p>
-        </div>
-      ))}
+      ) : null}
     </div>
   );
 }
