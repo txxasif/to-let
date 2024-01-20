@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { Input } from "./ui/input";
 import SuggestedList from "./suggestions";
 import searchHook from "@/hooks/searchHook";
+import currentLocationHook from "@/hooks/currentLocationHook";
 export default function PlacesAutocomplete() {
   const {
     text,
@@ -15,6 +16,7 @@ export default function PlacesAutocomplete() {
     setSelectedPlace,
     setSelectedIndex,
   } = searchHook();
+  const { setCurrentLocation } = currentLocationHook();
   const debouncedSearch = useCallback(async (value) => {
     const link = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&filter=countrycode:bd&format=json&apiKey=cb3064e03e944dd3a8bdbb97e221a185`;
 
@@ -41,16 +43,16 @@ export default function PlacesAutocomplete() {
     } else if (e.key === "Enter") {
       if (selectedIndex !== -1) {
         const selectedProduct = searchResults[selectedIndex];
-        alert(selectedProduct.address_line2);
+        const { lat, lon: lng } = selectedProduct;
+
         setSelectedPlace(selectedProduct);
-        setSearchResults([]);
+        setCurrentLocation({ lat, lng });
+        setText(selectedProduct.formatted);
       }
     }
   }
   function setSelectedPlaceReducer(place) {
     setSelectedPlace(place);
-    alert(place.address_line2);
-    setSearchResults([]);
   }
   return (
     <div className="flex flex-col mx-auto min-w-min max-w-lg">

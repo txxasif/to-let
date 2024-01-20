@@ -11,12 +11,14 @@ const center = {
   lng: 91.3966686,
 };
 import { HashLoader } from "react-spinners";
+import currentLocationHook from "@/hooks/currentLocationHook";
 export default function Home() {
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
     libraries: libraries,
   });
+  const { currentLocation } = currentLocationHook();
   if (!isLoaded) {
     return (
       <main className="w-full flex items-center justify-center h-screen">
@@ -32,15 +34,16 @@ export default function Home() {
 
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
+        center={currentLocation}
+        onClick={(e) => console.log(e.latLng.toJSON())}
+        zoom={14}
         options={{
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
         }}
       >
-        <Marker position={center} />
+        <Marker position={currentLocation} />
       </GoogleMap>
     </main>
   );
