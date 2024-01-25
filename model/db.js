@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 let isConnected = false;
-const MONGODB_URL = process.env.MONGODB_SECRATE;
+const MONGODB_URL =
+  "mongodb+srv://agrobd:Asif8377@agrobd.joapcha.mongodb.net/tolet?retryWrites=true&w=majority";
 
 mongoose.connection.once("open", () => {
   console.log("MongoDB connection opened!");
@@ -16,15 +17,13 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URL);
     isConnected = true;
     console.log("MongoDB connected!");
   } catch (err) {
     console.error(err.message);
-    process.exit(1);
+    console.log("something went wrong");
+    //process.exit(1);
   }
 };
 

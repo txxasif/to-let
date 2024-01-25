@@ -16,7 +16,6 @@ export default function Home() {
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
-    libraries: libraries,
   });
   const { currentLocation } = currentLocationHook();
   if (!isLoaded) {
@@ -43,7 +42,7 @@ export default function Home() {
           fullscreenControl: false,
         }}
       >
-        <Marker position={currentLocation} />
+        <Marker position={center} />
       </GoogleMap>
     </main>
   );
