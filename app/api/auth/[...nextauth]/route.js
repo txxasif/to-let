@@ -11,7 +11,6 @@ export const authOptions = {
       async authorize(credentials) {
         await connectDB();
         const { email, password } = credentials;
-        console.log(credentials, "cr");
         const user = await User.findOne({ email, password }).select(
           "-password"
         );

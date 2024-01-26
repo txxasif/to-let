@@ -1,21 +1,37 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+"use client";
+
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-export default async function Header() {
-  const session = await getServerSession(authOptions);
-  console.log(session);
+
+export default function Header() {
+  const { data, status } = useSession();
+  const currentUser = status === "authenticated" ? true : false;
+  const currentUserId = data?.user._id;
+  async function logOut() {
+    await signOut();
+  }
+
   return (
     <div className="w-full h-fit py-4 px-4 bg-[#1E1E1E] flex justify-between items-center">
-      <Image className="" src={"/logo.png"} height={100} width={100} />
+      <Link href={"/"}>
+        <Image className="" src={"/logo.png"} height={100} width={100} />
+      </Link>
       <div className="text-[#1CBCBF] space-x-2">
-        {session ? (
+        {currentUser ? (
           <>
             <Link
               className="border px-2 py-1 rounded-sm"
-              href={`/${session.user._id}`}
+              href={`/${currentUserId}`}
             >
               Profile
+            </Link>
+            <Link
+              href={"#"}
+              className="border px-2 py-1 rounded-sm"
+              onClick={logOut}
+            >
+              Log Out
             </Link>
           </>
         ) : (

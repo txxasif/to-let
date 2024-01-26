@@ -1,10 +1,9 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/store/provider";
 import Header from "@/components/header";
 import { NextAuthProvider } from "@/provider/nextAuth";
 import { Toaster } from "react-hot-toast";
-const inter = Inter({ subsets: ["latin"] });
+import { roboto, openSans, publicSans } from "@/fonts/font";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={roboto.className}>
         <NextAuthProvider>
           <ReduxProvider>
             <Header />
