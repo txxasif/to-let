@@ -34,7 +34,8 @@ export const authOptions = {
           _id: user._id,
           email: user.email,
           name: user.name,
-          photo: user.photo,
+          photo: user?.photo || null,
+          phone: user?.phone || null,
         },
       };
     },

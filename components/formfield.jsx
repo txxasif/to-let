@@ -1,16 +1,4 @@
-export default function FormFiled({
-  type,
-  placeholder,
-  name,
-  register,
-  error,
-  valueAsNumber,
-  required,
-}) {
-  return (
-    <>
-      <input type={type} placeholder={placeholder} {...register(name)} />
-      {error && <span className="error-message">{error.message}</span>}
-    </>
-  );
+import { Input } from "./ui/input";
+export default function InputFiled({ type, placeholder, name, ...props }) {
+  return <Input type={type} placeholder={placeholder} name={name} {...props} />;
 }

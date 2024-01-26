@@ -1,9 +1,8 @@
 import "./globals.css";
-import ReduxProvider from "@/store/provider";
 import Header from "@/components/header";
-import { NextAuthProvider } from "@/provider/nextAuth";
 import { Toaster } from "react-hot-toast";
-import { roboto, openSans, publicSans } from "@/fonts/font";
+import { roboto } from "@/fonts/font";
+import AllProviders from "@/provider/provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,13 +13,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <NextAuthProvider>
-          <ReduxProvider>
-            <Header />
-            {children}
-            <Toaster />
-          </ReduxProvider>
-        </NextAuthProvider>
+        <AllProviders>
+          <Header />
+          {children}
+          <Toaster />
+        </AllProviders>
       </body>
     </html>
   );
