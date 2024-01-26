@@ -4,30 +4,38 @@ import { redirect } from "next/navigation";
 import InputFiled from "@/components/formfield";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { SpinnerButtonServer } from "@/components/ui/serverbutton";
+import { updateUserSettings } from "@/model/user.model";
 export default async function Settings({ params }) {
   const session = await getServerSession(authOptions);
-  async function upload(data) {
-    "use server";
-    console.log(data.get("photo"));
-  }
 
   if (!session) {
     return redirect("/login");
   }
-  console.log(session.user);
+  const { phone, photo, _id } = session.user;
+  console.log(phone);
 
   return (
     <main className="w-full ">
       <form
-        action={upload}
+        action={updateUserSettings}
         className="w-fit mx-auto mt-[5%] space-y-2 border p-2"
       >
-        <Image className="w-fit" src="/profile.png" width={250} height={100} />
-        <InputFiled placeholder="" type="text" className="border" name="asif" />
+        <input defaultValue={_id.toString()} type="text" name="id" hidden />
+        <Image
+          className="w-full"
+          src={photo ? photo : "/profile.png"}
+          width={250}
+          height={100}
+        />
+        <InputFiled
+          placeholder={phone ? phone : "Enter Your Phone Number"}
+          type="number"
+          className="border"
+          name="phone"
+        />
         <InputFiled type="file" name="photo" />
-        <Button className="w-full" type="submit">
-          Submit
-        </Button>
+        <SpinnerButtonServer name={"Submit"} className="w-full" />
       </form>
     </main>
   );

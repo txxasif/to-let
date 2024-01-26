@@ -35,6 +35,13 @@ export default function SignUp() {
       <input
         className="border-b px-1 py-2"
         required
+        type="number"
+        name="phone"
+        placeholder="Enter Your Phone Number"
+      />
+      <input
+        className="border-b px-1 py-2"
+        required
         type="password"
         name="password"
         placeholder="Enter Your Password"

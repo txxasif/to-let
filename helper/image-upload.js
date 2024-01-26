@@ -1,3 +1,4 @@
+import axios from "axios";
 export async function uploadPhoto(photo) {
   const formData = new FormData();
   formData.append("file", photo);
@@ -6,6 +7,5 @@ export async function uploadPhoto(photo) {
     "https://api.cloudinary.com/v1_1/dupffxzyk/image/upload",
     formData
   );
-  console.log(result, "p");
   return result.data.secure_url;
 }

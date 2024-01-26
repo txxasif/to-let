@@ -11,7 +11,6 @@ export default function SignUp() {
   const [state, formAction] = useFormState(checkUser, initialState);
   const { status } = useSession();
   async function afterSuccess(data) {
-    console.log(data);
     try {
       await signIn("credentials", { ...data, redirect: false });
     } catch (err) {
