@@ -1,6 +1,9 @@
 "use client";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import PlacesAutoComplete from "@/components/autocomplete";
+
+import { HashLoader } from "react-spinners";
+import userCurrentLocationHook from "@/hooks/userCurrenLocationHook";
+import UserPlacesAutocomplete from "./autocomplete-user";
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -10,14 +13,12 @@ const center = {
   lat: 22.8570451,
   lng: 91.3966686,
 };
-import { HashLoader } from "react-spinners";
-import currentLocationHook from "@/hooks/currentLocationHook";
 export default function Home() {
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
   });
-  const { currentLocation, setCurrentLocation } = currentLocationHook();
+  const { currentLocation, setCurrentLocation } = userCurrentLocationHook();
   function onClickChangeMarker(e) {
     const markedLocation = e.latLng.toJSON();
     setCurrentLocation(markedLocation);
@@ -30,9 +31,9 @@ export default function Home() {
     );
   }
   return (
-    <main className="w-full bg-white relative container">
+    <main className="w-full bg-white relative">
       <div className="absolute  top-3 z-10 w-full">
-        <PlacesAutoComplete />
+        <UserPlacesAutocomplete />
       </div>
 
       <GoogleMap

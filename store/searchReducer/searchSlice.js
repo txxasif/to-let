@@ -12,6 +12,7 @@ export const search = createSlice({
   reducers: {
     setSearchResults: (state, action) => {
       state.searchResults = action.payload;
+      state.selectedIndex = -1;
     },
     setSelectedIndex: (state, action) => {
       if (action.payload === "up") {
