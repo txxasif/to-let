@@ -20,6 +20,7 @@ export default function Home() {
   const { currentLocation, setCurrentLocation } = currentLocationHook();
   function onClickChangeMarker(e) {
     const markedLocation = e.latLng.toJSON();
+    console.log(markedLocation);
     setCurrentLocation(markedLocation);
   }
   if (!isLoaded) {
@@ -38,6 +39,7 @@ export default function Home() {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={currentLocation}
+        onClick={onClickChangeMarker}
         zoom={14}
         options={{
           streetViewControl: false,

@@ -8,3 +8,7 @@ export const zoomSelector = createSelector(
   [useCurrentLocation],
   (useCurrentLocation) => useCurrentLocation.zoom
 );
+export const countSelector = createSelector(
+  [useCurrentLocation],
+  (useCurrentLocation) => useCurrentLocation.count
+);

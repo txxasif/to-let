@@ -16,6 +16,7 @@ export default function userCurrentLocationHook() {
 
   /* eslint-disable no-alert, no-console */
   useEffect(() => {
+    console.log("running");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     } else {

@@ -3,7 +3,7 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 import { HashLoader } from "react-spinners";
 import userCurrentLocationHook from "@/hooks/userCurrenLocationHook";
-import UserPlacesAutocomplete from "./autocomplete-user";
+import CreateTolet from "./user/post-tolet";
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -21,6 +21,7 @@ export default function Home() {
   const { currentLocation, setCurrentLocation } = userCurrentLocationHook();
   function onClickChangeMarker(e) {
     const markedLocation = e.latLng.toJSON();
+    console.log(markedLocation);
     setCurrentLocation(markedLocation);
   }
   if (!isLoaded) {
@@ -30,16 +31,15 @@ export default function Home() {
       </main>
     );
   }
+
   return (
     <main className="w-full bg-white relative">
-      <div className="absolute  top-3 z-10 w-full">
-        <UserPlacesAutocomplete />
-      </div>
-
+      <CreateTolet />
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={currentLocation}
         zoom={14}
+        onClick={onClickChangeMarker}
         options={{
           streetViewControl: false,
           mapTypeControl: false,

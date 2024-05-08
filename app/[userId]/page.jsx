@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Profile from "@/components/profile";
 export default async function Page({ params }) {
   const session = await getServerSession(authOptions);
+
   if (!session) {
     redirect("/login");
   }

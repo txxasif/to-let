@@ -6,6 +6,7 @@ import {
 import { setCurrentLocation as setLoc } from "@/store/currentLocationReducer/currentLocationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { countSelector } from "@/store/userCurrentLocation/userCurrentLocationSelector";
 export default function currentLocationHook() {
   const dispatch = useDispatch();
   const currentLocation = useSelector(currentLocationSelector);

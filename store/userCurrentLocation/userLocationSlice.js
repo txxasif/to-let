@@ -6,6 +6,7 @@ const initialState = {
   },
   error: false,
   zoom: 10,
+  count: 0,
 };
 export const userCurrentLocation = createSlice({
   name: "userCurrentLocation",
@@ -13,6 +14,7 @@ export const userCurrentLocation = createSlice({
   reducers: {
     setUserCurrentLocation: (state, action) => {
       state.currentLocation = action.payload;
+      state.count += state.count;
     },
     setUserZoom: (state, action) => {
       state.zoom = action.payload;
