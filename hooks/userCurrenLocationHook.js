@@ -4,12 +4,13 @@ import {
   zoomSelector,
 } from "@/store/userCurrentLocation/userCurrentLocationSelector";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setUserCurrentLocation as setLoc } from "@/store/userCurrentLocation/userLocationSlice";
 export default function userCurrentLocationHook() {
   const dispatch = useDispatch();
   const currentLocation = useSelector(currentLocationSelector);
   const zoom = useSelector(zoomSelector);
+  const [backToCurrentLocation, setBackToCurrentLocation] = useState(false);
   function setCurrentLocation(place) {
     dispatch(setLoc(place));
   }
@@ -36,9 +37,10 @@ export default function userCurrentLocationHook() {
     function error() {
       console.log("Unable to retrieve your location");
     }
-  }, []);
+  }, [backToCurrentLocation]);
   return {
     currentLocation,
+    setBackToCurrentLocation,
     zoom,
     setCurrentLocation,
   };

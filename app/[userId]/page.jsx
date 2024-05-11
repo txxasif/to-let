@@ -10,7 +10,7 @@ export default async function Page({ params }) {
   }
   return (
     <main className="container pt-4">
-      <Profile user={session.user} />
+      <Profile />
     </main>
   );
 }

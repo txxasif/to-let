@@ -9,3 +9,9 @@ export async function uploadPhoto(photo) {
   );
   return result.data.secure_url;
 }
+
+export async function uploadImages(images) {
+  const uploadPromises = images.map(uploadPhoto);
+  const urls = await Promise.all(uploadPromises);
+  return urls;
+}

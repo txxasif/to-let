@@ -2,10 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Label, NumberInput, SelectOption, TextInput } from "./field";
 import { Input } from "./ui/input";
-import { Button } from "@/components/ui/button";
-import userCurrentLocationHook from "@/hooks/userCurrenLocationHook";
 import { useSelector } from "react-redux";
 import { currentLocationSelector } from "@/store/userCurrentLocation/userCurrentLocationSelector";
+import useMutationHook from "@/hooks/useMutationHook";
+import { SpinnerButton } from "./ui/spinnerButton";
+import { useSession } from "next-auth/react";
+import { uploadImages } from "@/helper/image-upload";
+import toast from "react-hot-toast";
+import { createPropertyAxios } from "@/actions/temp";
 const initialState = {
   address: "",
   rooms: 0,
@@ -27,9 +31,16 @@ const options = [
 ];
 const MultipleImageSelector = ({}) => {
   const currentLocation = useSelector(currentLocationSelector);
+  const { data: session, status } = useSession();
+  console.log(session);
   const [images, setImages] = useState([]);
-  const [imageLen, setImageLen] = useState(0);
   const [formData, setFormData] = useState(initialState);
+  const { mutate, isPending } = useMutationHook(createPropertyAxios, {
+    key: ["posts"],
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -44,8 +55,15 @@ const MultipleImageSelector = ({}) => {
       [name]: type === "number" ? Number(value) : value,
     }));
   }
-  function handleSubmit() {
+  async function handleSubmit() {
     console.log(currentLocation);
+    if (!images.length) toast.error("Please Choose Images");
+    const urls = await uploadImages(images);
+    const data = formData;
+    data.photos = urls;
+    data["userId"] = session.user._id;
+
+    mutate(formData);
   }
   function onImageChange(e) {
     const { type, files } = e.target;
@@ -124,9 +142,11 @@ const MultipleImageSelector = ({}) => {
       </div>
 
       <div className="flex justify-center w-full px-2 py-2">
-        <Button onClick={handleSubmit} className="px-6 py-4">
-          Asif
-        </Button>
+        <SpinnerButton
+          onClick={handleSubmit}
+          name={"Add"}
+          isLoading={isPending}
+        />
       </div>
     </div>
   );

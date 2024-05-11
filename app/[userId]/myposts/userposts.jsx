@@ -2,9 +2,12 @@
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { HashLoader } from "react-spinners";
 import userCurrentLocationHook from "@/hooks/userCurrenLocationHook";
-import CreateTolet from "./user/post-tolet";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { CustomMarker } from "@/components/custom-marker";
+const customMarkerIcon = {
+  url: "/home.png", // Path to your custom marker icon
+  scaledSize: { width: 20, height: 20 }, // Size of the marker icon
+};
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -14,13 +17,14 @@ const center = {
   lat: 22.8570451,
   lng: 91.3966686,
 };
-export default function Home({ params }) {
+export default function UserProperties({ properties }) {
+  console.log(properties);
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
   });
   const { currentLocation, setCurrentLocation } = userCurrentLocationHook();
-  const { data: session, status } = useSession();
+
   function onClickChangeMarker(e) {
     const markedLocation = e.latLng.toJSON();
     setCurrentLocation(markedLocation);
@@ -35,10 +39,6 @@ export default function Home({ params }) {
 
   return (
     <main className="w-full bg-white relative">
-      <CreateTolet />
-      <Link href={`/${session ? session.user._id : null}/myposts`}>
-        My Posts
-      </Link>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={currentLocation}
@@ -50,7 +50,10 @@ export default function Home({ params }) {
           fullscreenControl: false,
         }}
       >
-        <Marker position={currentLocation} />
+        {properties.map((property, idx) => (
+          <CustomMarker key={idx} data={property} />
+        ))}
+        {/* <Marker position={currentLocation} icon={customMarkerIcon} /> */}
       </GoogleMap>
     </main>
   );

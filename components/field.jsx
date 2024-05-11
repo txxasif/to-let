@@ -92,11 +92,18 @@ export const Label = ({ name }) => {
     </label>
   );
 };
-export const SelectOption = ({ onChange, defaultValue, values, name }) => {
+export const SelectOption = ({
+  onChange,
+  defaultValue,
+  values,
+  name,
+  className,
+}) => {
   return (
     <Select
       defaultValue={defaultValue}
       value={defaultValue}
+      className={className ? className : null}
       onValueChange={(v) =>
         onChange({ target: { name: name, value: v, type: "text" } })
       }
