@@ -6,7 +6,8 @@ import { HashLoader } from "react-spinners";
 import currentLocationHook from "@/hooks/currentLocationHook";
 import { SelectOption } from "@/components/field";
 import { useState } from "react";
-import useMutationHook from "@/hooks/useMutationHook";
+import { Button } from "@/components/ui/button";
+import { CustomMarker } from "@/components/custom-marker";
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -19,15 +20,14 @@ const center = {
 const options = [
   { value: "bachelor", name: "Bachelor" },
   { value: "family", name: "Family" },
-  { value: "both", name: "Both" },
 ];
 const initialState = {
-  type: "both",
+  type: "family",
   distance: 10,
 };
 export default function Home() {
   const [formData, setFormData] = useState(initialState);
-  useMutationHook();
+  const [properties, setProperties] = useState([]);
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
     googleMapsApiKey: "AIzaSyDIoJxlZm-VtQTGEDLCCnFzHXEOpon-YIA",
@@ -48,6 +48,15 @@ export default function Home() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const response = await fetch(
+      `/api/property/filter?distance=${formData.distance}&type=${formData.type}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
+    ).then((res) => res.json());
+    setProperties(response.data);
+  }
+
   if (!isLoaded) {
     return (
       <main className="w-full flex items-center justify-center h-screen">
@@ -70,6 +79,7 @@ export default function Home() {
           onChange={handleChange}
           name="type"
         />
+        <Button onClick={handleSubmit}>Search</Button>
       </div>
       <div className="absolute   top-14 z-10 w-full">
         <PlacesAutoComplete />
@@ -86,6 +96,9 @@ export default function Home() {
           fullscreenControl: false,
         }}
       >
+        {properties.map((property, idx) => (
+          <CustomMarker key={idx} data={property} />
+        ))}
         <Marker position={currentLocation} />
       </GoogleMap>
     </main>

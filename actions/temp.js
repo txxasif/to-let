@@ -1,6 +1,6 @@
 import axios from "axios";
-const url = process.env.Backend_Url;
-const axiosAdmin = axios.create({
+export const url = process.env.Backend_Url;
+export const axiosAdmin = axios.create({
   baseURL: url,
 });
 export async function createPropertyAxios(data) {
@@ -8,8 +8,30 @@ export async function createPropertyAxios(data) {
   return response.data;
 }
 export async function getPropertiesByUserId(userId) {
-  const response = await axiosAdmin.get(
-    `/property/user/properties?id=${userId}`
+  console.log("hi");
+  const response = await fetch(`/api/property/user?id=${userId}`).then(
+    (response) => response.json()
   );
+  return response.data;
+}
+// export async function getFilteredProperty(data) {
+//   const { distance, type, lat, lng } = data;
+//   console.log(lat, lng);
+//   const response = await axiosAdmin.get(
+//     `/property/filter?distance=${distance}&type=${type}&lat=${lat}&lng=${lng}`
+//   );
+//   return response.data;
+// }
+
+export async function createPropertyAxiosMock(data) {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", // Specify content type (adjust if needed)
+    },
+    body: JSON.stringify(data), // Convert data to JSON string for POST request
+  };
+  console.log(options);
+  const response = await fetch("/api/property/", options);
   return response.data;
 }

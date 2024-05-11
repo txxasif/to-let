@@ -9,8 +9,9 @@ import { SpinnerButton } from "./ui/spinnerButton";
 import { useSession } from "next-auth/react";
 import { uploadImages } from "@/helper/image-upload";
 import toast from "react-hot-toast";
-import { createPropertyAxios } from "@/actions/temp";
+import { createPropertyAxios, createPropertyAxiosMock } from "@/actions/temp";
 const initialState = {
+  homeName: "",
   address: "",
   rooms: 0,
   floorNo: 0,
@@ -32,13 +33,13 @@ const options = [
 const MultipleImageSelector = ({}) => {
   const currentLocation = useSelector(currentLocationSelector);
   const { data: session, status } = useSession();
-  console.log(session);
   const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
-  const { mutate, isPending } = useMutationHook(createPropertyAxios, {
+  const { mutate, isPending } = useMutationHook(createPropertyAxiosMock, {
     key: ["posts"],
     onSuccess: (data) => {
-      console.log(data);
+      setIsLoading(false);
     },
   });
   useEffect(() => {
@@ -56,9 +57,11 @@ const MultipleImageSelector = ({}) => {
     }));
   }
   async function handleSubmit() {
-    console.log(currentLocation);
+    setIsLoading(true);
+    console.log(formData);
     if (!images.length) toast.error("Please Choose Images");
     const urls = await uploadImages(images);
+
     const data = formData;
     data.photos = urls;
     data["userId"] = session.user._id;
@@ -73,6 +76,10 @@ const MultipleImageSelector = ({}) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto gap-4">
+        <div className="space-y-2">
+          <Label name="homeName" />
+          <TextInput name="homeName" onChange={handleChange} />
+        </div>
         <div className="space-y-2">
           <Label name="address" />
           <TextInput name="address" onChange={handleChange} />
@@ -145,7 +152,7 @@ const MultipleImageSelector = ({}) => {
         <SpinnerButton
           onClick={handleSubmit}
           name={"Add"}
-          isLoading={isPending}
+          isLoading={isLoading}
         />
       </div>
     </div>

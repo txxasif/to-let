@@ -6,6 +6,10 @@ const propertySchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  homeName: {
+    type: String,
+    default: "",
+  },
   address: {
     type: String,
     default: "",
