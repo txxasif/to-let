@@ -17,5 +17,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - **Detailed Property Views**: View comprehensive details of properties including photos, amenities, and landlord preferences.
 - **Schedule Viewings**: Easily schedule property viewings directly through the platform.
 
+![Screenshot 2024-06-10 132757](https://github.com/txxasif/to-let/assets/54706529/c5708037-6dcb-42ef-b2a1-3b22f87b866d)
+![Screenshot 2024-06-10 133128](https://github.com/txxasif/to-let/assets/54706529/8c8ad5d4-9052-40b8-86e1-ed643aff3374)
 
+![Screenshot 2024-06-10 133459](https://github.com/txxasif/to-let/assets/54706529/d2e6b6f8-652b-476e-a139-2afa17014fa2)
 
