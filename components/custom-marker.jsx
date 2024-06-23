@@ -22,7 +22,7 @@ import {
   VelSvg,
 } from "@/icons/icons";
 const customMarkerIcon = {
-  url: "/home.png", // Path to your custom marker icon
+  url: "/home1.svg", // Path to your custom marker icon
   scaledSize: { width: 20, height: 20 }, // Size of the marker icon
 };
 export function CustomMarker({ data }) {

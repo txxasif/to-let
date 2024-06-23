@@ -54,6 +54,7 @@ export default function Home() {
     const response = await fetch(
       `/api/property/filter?distance=${formData.distance}&type=${formData.type}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
     ).then((res) => res.json());
+    console.log(response.data.length);
     setProperties(response.data);
   }
 
