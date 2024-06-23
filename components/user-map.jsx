@@ -35,10 +35,15 @@ export default function Home({ params }) {
 
   return (
     <main className="w-full bg-white relative">
-      <CreateTolet />
-      <Link href={`/${session ? session.user._id : null}/myposts`}>
-        My Posts
-      </Link>
+      <div className="flex items-center justify-center">
+        <CreateTolet />
+        <Link
+          className="text-2xl"
+          href={`/${session ? session.user._id : null}/myposts`}
+        >
+          My Posts
+        </Link>
+      </div>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={currentLocation}

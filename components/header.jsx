@@ -14,8 +14,8 @@ export default function Header() {
 
   return (
     <div className="w-full h-fit py-4 px-4 bg-[#1E1E1E] flex justify-between items-center">
-      <Link href={"/"}>
-        <Image className="" src={"/logo.png"} height={100} width={100} />
+      <Link className="border px-2 py-1 rounded-sm text-[#1CBCBF]  " href={"/"}>
+        Home
       </Link>
       <div className="text-[#1CBCBF] space-x-2">
         {currentUser ? (
