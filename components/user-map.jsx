@@ -37,11 +37,13 @@ export default function Home({ params }) {
     <main className="w-full bg-white relative">
       <div className="flex items-center justify-center">
         <CreateTolet />
-        <Link
-          className="text-2xl"
-          href={`/${session ? session.user._id : null}/myposts`}
-        >
-          My Posts
+        <Link href={`/${session ? session.user._id : null}/myposts`}>
+          <button className="text-xl flex items-center gap-4 hover:bg-slate-200 p-3 m-2 rounded-md border">
+            <span>
+              <img className="w-6 h-6" src="/postcard-svgrepo-com.png" alt="" />
+            </span>
+            My Posts
+          </button>
         </Link>
       </div>
       <GoogleMap
