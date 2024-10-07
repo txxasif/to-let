@@ -1,96 +1,90 @@
 "use client";
+
+import { useState } from "react";
+import { Marker } from "@react-google-maps/api";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Marker } from "@react-google-maps/api";
-import { useState } from "react";
 import { ImageCarousel } from "./image-carousel";
-import {
-  FloorSvg,
-  LocationSvg,
-  PhoneSvg,
-  RentSvg,
-  RoomsSvg,
-  VelSvg,
-} from "@/icons/icons";
+import { Separator } from "@/components/ui/separator";
+import { MapPin, Phone, Home, Building2, DoorOpen, Wind } from "lucide-react";
+
 const customMarkerIcon = {
-  url: "/home1.svg", // Path to your custom marker icon
-  scaledSize: { width: 20, height: 20 }, // Size of the marker icon
+  url: "/home1.svg",
+  scaledSize: { width: 20, height: 20 },
 };
+
 export function CustomMarker({ data }) {
-  const [isOpen, setIsOpen] = useState(false); // State to manage drawer visibility
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleMarkerClick = () => {
     setIsOpen(true);
   };
-  console.log(data);
+
   return (
     <Marker
       onClick={handleMarkerClick}
       position={{ lat: data.lat, lng: data.lng }}
       icon={customMarkerIcon}
     >
-      {" "}
-      <Drawer open={isOpen} onClose={() => setIsOpen(false)}>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerTrigger asChild>
-          <Button variant="outline">Open Drawer</Button>
+          <Button variant="outline" className="sr-only">
+            Open Drawer
+          </Button>
         </DrawerTrigger>
         <DrawerContent>
-          <div className="p-4  flex flex-row-reverse justify-evenly max-w-4xl mx-auto w-full ">
-            <DrawerHeader>
-              <DrawerDescription className="leading-3 space-y-2">
-                <DrawerTitle className="pl-1">{data.homeName}</DrawerTitle>
-                <div className="flex items-center  space-x-2 ">
-                  <LocationSvg className="w-4" /> <p>Address: </p>{" "}
-                  <h3>{data.address}</h3>
+          <div className="p-4 flex flex-row-reverse justify-evenly max-w-4xl mx-auto w-full">
+            <DrawerHeader className="space-y-2">
+              <DrawerTitle className="text-2xl font-serif mb-2">
+                {data.homeName}
+              </DrawerTitle>
+              <DrawerDescription className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Address:</p>
+                  <h3 className="text-sm">{data.address}</h3>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <PhoneSvg className="w-4 " /> <p>Address: </p>{" "}
-                  <h3>{data.contactNumber}</h3>
+                  <Phone className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Contact:</p>
+                  <h3 className="text-sm">{`0${data.contactNumber}`}</h3>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex items-center space-x-2">
+                  <Home className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Rent:</p>
+                  <h3 className="text-sm font-semibold">{data.rent} TK</h3>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RentSvg className="w-4 opacity-70" /> <p>Rent: </p>{" "}
-                  <h3>{data.rent} TK</h3>
+                  <Building2 className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Floor No:</p>
+                  <h3 className="text-sm">{data.floorNo}</h3>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <FloorSvg className="w-4 opacity-70" /> <p>Floor No: </p>{" "}
-                  <h3>{data.floorNo}</h3>
+                  <DoorOpen className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Rooms:</p>
+                  <h3 className="text-sm">{data.rooms}</h3>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RoomsSvg className="w-4 opacity-70" /> <p>Rooms: </p>{" "}
-                  <h3>{data.rooms}</h3>
+                  <Wind className="w-4 h-4 text-primary" />
+                  <p className="font-medium">Veranda:</p>
+                  <h3 className="text-sm">{data.veranda}</h3>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <VelSvg className="w-4 opacity-70" /> <p>Veranda: </p>{" "}
-                  <h3>{data.veranda}</h3>
-                </div>
-                <div>
-                  <button className="px-2 py-2 bg-black text-white font-medium rounded mt-2">
-                    {" "}
-                    Contact us
-                  </button>
-                </div>
+                <Button className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
+                  Contact Us
+                </Button>
               </DrawerDescription>
             </DrawerHeader>
-            {/* Other Details */}
-
             <div className="w-3/5 p-4 pt-0">
               {isOpen ? <ImageCarousel photos={data.photos} /> : null}
             </div>
-            {/* <DrawerFooter>
-              <Button>Submit</Button>
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter> */}
           </div>
         </DrawerContent>
       </Drawer>
